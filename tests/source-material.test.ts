@@ -12,4 +12,14 @@ describe("source material analysis", () => {
     expect(result.sourceType).toBe("document");
     expect(result.text.trim().length).toBeGreaterThan(0);
   });
+  it("extracts text from an actual PDF input", async () => {
+    const result = await extractMaterial(path.join(process.cwd(), "tests", "fixtures", "source-material.pdf"));
+    expect(result.sourceType).toBe("document");
+    expect(result.text).toContain("performance 20 points");
+  });
+  it("runs OCR for an actual image input", async () => {
+    const result = await extractMaterial(path.join(process.cwd(), "node_modules", "tesseract.js", "docs", "images", "tesseract.png"));
+    expect(result.sourceType).toBe("image");
+    expect(result.text.trim().length).toBeGreaterThan(0);
+  }, 30_000);
 });
