@@ -1,0 +1,2 @@
+const { contextBridge, ipcRenderer } = require("electron");
+contextBridge.exposeInMainWorld("leader", { open: () => ipcRenderer.invoke("leader:open"), status: (root) => ipcRenderer.invoke("leader:status", root), latestHandoff: (root) => ipcRenderer.invoke("leader:latest-handoff", root), intake: (root) => ipcRenderer.invoke("leader:intake", root), action: (root, action, value) => ipcRenderer.invoke("leader:action", root, action, value), report: (root, mode) => ipcRenderer.invoke("leader:report", root, mode) });

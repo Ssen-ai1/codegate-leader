@@ -1,0 +1,11 @@
+[
+  { "id": "small-clear-task", "kind": "clear-coding", "assertions": ["TaskSpec approved", "Plan accepted", "Handoff generated"] },
+  { "id": "ambiguous-task", "kind": "clarification", "assertions": ["blocking question prevents approval", "answer produces versioned TaskSpec"] },
+  { "id": "rubric-contest", "kind": "rubric", "assertions": ["score item retains SourcePointer", "Rubric Matrix maps to PlanStep"] },
+  { "id": "existing-repository", "kind": "multi-step", "assertions": ["environment facts pending then confirmed", "dependency unlocks next step"] },
+  { "id": "scope-expansion", "kind": "drift", "assertions": ["unreported Git change requires user decision"] },
+  { "id": "report-diff-mismatch", "kind": "evidence", "assertions": ["claimed file absent from Diff is rejected"] },
+  { "id": "requirement-change", "kind": "change", "assertions": ["TaskSpec revision remains versioned", "Plan needs explicit patch"] },
+  { "id": "agent-switch", "kind": "handoff", "assertions": ["Codex and Claude Code receive neutral artifacts"] },
+  { "id": "beginner-mentor", "kind": "learning", "assertions": ["learning profile persists", "Mentor remains separate from Handoff"] }
+]

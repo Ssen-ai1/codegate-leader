@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>CodeGate Leader</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, "Microsoft YaHei", sans-serif; background: #0c111b; color: #e8edf6; }
+  body { margin: 0; }
+  header { padding: 28px 36px 20px; border-bottom: 1px solid #273247; display: flex; justify-content: space-between; align-items: start; }
+  h1, h2, h3, p { margin: 0; } h1 { font-size: 25px; } header p { color: #aebbd1; margin-top: 7px; }
+  main { padding: 24px 36px 42px; max-width: 1400px; margin: auto; }
+  .toolbar, .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, input { font: inherit; border-radius: 7px; border: 1px solid #34435d; padding: 9px 12px; background: #182337; color: #e8edf6; }
+  button { cursor: pointer; background: #2463d5; border-color: #3b76e0; } button:hover { background: #3175ef; }
+  button.secondary { background: #1b273b; } button.warn { background: #9b4a19; border-color: #c87335; }
+  input { min-width: 230px; } .status { color: #8ec8ff; font-weight: 650; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: #121b2a; border: 1px solid #293951; border-radius: 10px; padding: 16px; min-height: 120px; }
+  .card.wide { grid-column: 1 / -1; } h2 { font-size: 16px; margin-bottom: 12px; }
+  .map { display:flex; flex-wrap:wrap; gap:9px; align-items:center; } .node { padding:9px; border:1px solid #3d5e8d; border-radius:7px; background:#182944; } .arrow { color:#7ba8e8; }
+  table { width:100%; border-collapse:collapse; font-size:13px; } th,td { text-align:left; padding:8px; border-bottom:1px solid #293951; } th { color:#aac7f4; }
+  h3 { font-size: 14px; margin: 12px 0 5px; color: #bcd0ef; } .muted { color: #9cabc2; }
+  ul { margin: 6px 0 0; padding-left: 20px; } li { margin: 4px 0; }
+  pre { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; background: #0c111b; border: 1px solid #263650; border-radius: 7px; padding: 12px; max-height: 300px; overflow: auto; font-size: 12px; }
+  #actions[hidden] { display: none; } #notice { margin-top: 14px; color: #ffcb87; }
+  @media (max-width: 850px) { header, main { padding-left: 20px; padding-right: 20px; } .grid { grid-template-columns: 1fr; } }
+</style>
+<header>
+  <div><h1>CodeGate Leader</h1><p>复杂任务的稳定事实源、跨 Agent 交接与独立审查。</p></div>
+  <div class="toolbar"><button id="open">打开项目</button><button id="refresh" class="secondary" hidden>刷新状态</button></div>
+</header>
+<main>
+  <section id="actions" hidden>
+    <div class="controls">
+      <button id="intake">导入任务资料</button><button data-a="approve-task">批准 TaskSpec</button>
+      <input id="leader-message" placeholder="向 Leader 补充背景或提问"><button data-a="leader-analyze">Leader 分析</button>
+      <input id="decision" placeholder="已确认的架构决策"><button data-a="architecture">记录架构</button>
+      <button data-a="plan">生成 Draft Plan</button><button data-a="approve-plan">批准 Plan</button>
+      <button data-a="confirm-environment" class="secondary">确认环境事实</button>
+    </div>
+    <div class="controls" style="margin-top:8px">
+      <label>执行 Agent <select id="agent"><option value="generic">Generic</option><option value="codex">Codex</option><option value="claude-code">Claude Code</option></select></label>
+      <button data-a="next">生成 Handoff</button><button id="show-handoff" class="secondary">查看当前 Handoff</button><button data-r="ingest" class="secondary">导入 Report</button>
+      <button data-r="review" class="secondary">Review Report</button><button data-a="correct" class="warn">Correction Handoff</button><button data-a="explain" class="secondary">Mentor Brief</button>
+      <label>学习档案 <select id="level"><option value="beginner">初学者</option><option value="intermediate" selected>进阶</option><option value="advanced">高级</option></select></label><select id="depth"><option value="concise">简洁</option><option value="standard" selected>标准</option><option value="deep">深入</option></select><button data-a="set-learning-profile" class="secondary">保存档案</button>
+      <input id="mentor-question" placeholder="向 Mentor 追问原理、算法或调试"><button data-a="ask-mentor" class="secondary">Mentor 追问</button>
+    </div>
+  </section>
+  <p id="notice">选择一个项目以恢复或开始 CodeGate 工作流。</p>
+  <section class="grid" id="dashboard" hidden>
+    <article class="card"><h2>当前状态</h2><p id="state" class="status"></p><p id="project" class="muted"></p><p id="current-step"></p></article>
+    <article class="card"><h2>TaskSpec</h2><div id="task"></div></article>
+    <article class="card wide"><h2>WorkPlan / 任务地图</h2><div id="plan"></div><div id="map" class="map"></div></article>
+    <article class="card wide"><h2>Rubric Matrix</h2><div id="rubric"></div></article>
+    <article class="card wide"><h2>交接 / 审查 / 教学输出</h2><pre id="output">尚无输出。</pre></article>
+  </section>
+</main>
+<script>
+  let root, lastData;
+  const actions = document.querySelector("#actions");
+  const dashboard = document.querySelector("#dashboard");
+  const notice = document.querySelector("#notice");
+  const output = document.querySelector("#output");
+  const el = (id) => document.querySelector(id);
+  const esc = (value) => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+  function render(data, result) {
+    if (!data) return;
+    lastData = data;
+    const { state, task, plan, environment, learningProfile } = data;
+    el("#state").textContent = state.status;
+    el("#project").textContent = root || "";
+    el("#current-step").textContent = (state.currentStepId ? "当前步骤：" + state.currentStepId : "当前没有可执行步骤") + (environment ? " · 环境事实：" + environment.status : " · 环境事实：Unknown") + (learningProfile ? " · 学习档案：" + learningProfile.level : "");
+    el("#task").innerHTML = task ? "<p><strong>" + esc(task.title) + "</strong></p><p class='muted'>" + esc(task.objective) + "</p><h3>验收项</h3><ul>" + task.acceptanceCriteria.map((item) => "<li>" + esc(item.title) + "</li>").join("") + "</ul>" : "<p class='muted'>尚未导入任务资料。</p>";
+    el("#plan").innerHTML = plan ? "<p class='muted'>" + esc(plan.summary) + "</p><ul>" + plan.steps.map((step) => "<li><strong>" + esc(step.id) + "</strong> · " + esc(step.title) + " <span class='muted'>[" + esc(step.status) + "]</span><br><span class='muted'>" + esc(step.objective) + "</span></li>").join("") + "</ul>" : "<p class='muted'>TaskSpec 与架构决策批准后生成。</p>";
+    el("#map").innerHTML = plan ? plan.steps.map((step, index) => (index ? "<span class='arrow'>→</span>" : "") + "<span class='node'>" + esc(step.id) + "<br><small>" + esc(step.status) + "</small></span>").join("") : "";
+    const rubricRows = (task?.rubricItems ?? []).map((item) => { const steps = (plan?.steps ?? []).filter((step) => step.rubricItemIds.includes(item.id)); const status = steps.some((step) => step.status === "accepted") ? "verified" : steps.length ? "planned" : "unmapped"; return "<tr><td>" + esc(item.description) + "</td><td>" + esc(steps.map((step) => step.id).join(", ") || "—") + "</td><td>" + status + "</td></tr>"; }).join("");
+    el("#rubric").innerHTML = rubricRows ? "<table><thead><tr><th>原始评分项</th><th>计划步骤</th><th>状态</th></tr></thead><tbody>" + rubricRows + "</tbody></table>" : "<p class='muted'>当前资料中没有识别到评分项。</p>";
+    if (result) output.textContent = typeof result === "string" ? result : JSON.stringify(result, null, 2);
+    dashboard.hidden = false; notice.hidden = true;
+  }
+
+  async function invoke(work) {
+    try { const data = await work(); if (data) render(data, data.handoff || data.review || data.mentor); }
+    catch (error) { notice.textContent = error.message; notice.hidden = false; }
+  }
+
+  el("#open").onclick = async () => {
+    const data = await window.leader.open();
+    if (!data) return;
+    root = data.root; actions.hidden = false; el("#refresh").hidden = false; render(data);
+  };
+  el("#refresh").onclick = () => invoke(() => window.leader.status(root));
+  el("#show-handoff").onclick = async () => { try { const handoff = await window.leader.latestHandoff(root); if (handoff) output.textContent = handoff.content; else { notice.textContent = "当前步骤尚未生成 Handoff。"; notice.hidden = false; } } catch (error) { notice.textContent = error.message; notice.hidden = false; } };
+  el("#intake").onclick = () => invoke(() => window.leader.intake(root));
+  actions.onclick = (event) => {
+    const action = event.target.dataset.a, report = event.target.dataset.r;
+    if ((!action && !report) || !root) return;
+    invoke(() => report ? window.leader.report(root, report) : window.leader.action(root, action, { decision: el("#decision").value, message: el("#leader-message").value, question: el("#mentor-question").value, level: el("#level").value, depth: el("#depth").value, agent: el("#agent").value }));
+  };
+</script>
+</html>

@@ -1,0 +1,46 @@
+{
+  "name": "codegate-leader",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A model-agnostic technical leader workspace for complex coding tasks.",
+  "author": "CodeGate Leader Contributors",
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "codegate": "dist/cli.js"
+  },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "desktop": "npm run build && electron desktop/main.cjs",
+    "package:win": "npm run build && electron-builder --win nsis --publish never",
+    "check": "npm run build && npm test"
+  },
+  "dependencies": {
+    "commander": "15.0.0",
+    "mammoth": "^1.12.1",
+    "pdf-parse": "^2.4.5",
+    "tesseract.js": "^7.0.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "electron": "40.0.0",
+    "electron-builder": "26.8.1",
+    "tsx": "4.23.12",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  },
+  "build": {
+    "appId": "com.codegate.leader",
+    "productName": "CodeGate Leader",
+    "directories": { "output": "release" },
+    "files": ["dist/**", "desktop/**", "package.json"],
+    "win": { "target": ["nsis"], "signAndEditExecutable": false },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  }
+}
