@@ -5,6 +5,7 @@ export type ExtractedMaterial = {
   sourceType: "document" | "image" | "workspace-file";
   text: string;
   warnings: string[];
+  lineLocators?: string[];
 };
 
 export async function extractMaterial(file: string): Promise<ExtractedMaterial> {
@@ -22,7 +23,9 @@ export async function extractMaterial(file: string): Promise<ExtractedMaterial> 
     const parser = new PDFParse({ data: await readFile(file) });
     try {
       const result = await parser.getText();
-      return { sourceType: "document", text: result.text, warnings: [] };
+      const lines: string[] = [], lineLocators: string[] = [];
+      for (const page of result.pages) for (const [index, line] of page.text.split(/\r?\n/).entries()) { lines.push(line); lineLocators.push(`page=${page.num}&line=${index + 1}`); }
+      return { sourceType: "document", text: lines.join("\n"), warnings: [], lineLocators };
     } finally { await parser.destroy(); }
   }
   if ([".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tiff"].includes(extension)) {

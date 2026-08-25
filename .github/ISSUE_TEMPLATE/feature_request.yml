@@ -1,0 +1,40 @@
+name: Feature Request
+description: 提议新的产品体验、Agent 适配器、解析器或验证能力
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+      description: 请先描述谁在什么场景遇到什么阻力，而不是只描述按钮或技术方案。
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前如何处理
+      description: 说明现有替代流程及其不足。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 可以包含界面、工作流、协议或示例。
+    validations:
+      required: true
+  - type: textarea
+    id: trust
+    attributes:
+      label: 用户批准与可信边界
+      description: 这个功能是否会执行命令、写文件、调用模型、改变计划或影响验收？
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: 成功标准
+      description: 如何证明功能真正改善体验或结果？
+    validations:
+      required: true

@@ -3,3 +3,17 @@ dist/
 .codegate/
 release/
 *.log
+*.traineddata
+tmp/
+coverage/
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.p12
+*.key
+.DS_Store
+Thumbs.db
+.claude/
+.codex/

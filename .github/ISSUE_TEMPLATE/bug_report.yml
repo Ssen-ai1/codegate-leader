@@ -1,0 +1,68 @@
+name: Bug Report
+description: 报告可复现的功能、数据、流程或体验问题
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请删除 API Key、Token、私有源码和个人路径后再提交日志或截图。
+  - type: input
+    id: version
+    attributes:
+      label: CodeGate 版本
+      placeholder: 例如 0.2.0-alpha.9
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: 例如 Windows 11 24H2
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 项目模式
+      options:
+        - 产品开发模式
+        - FPGA / 嵌入式竞赛模式
+        - CLI
+        - 设置 / 安装 / 更新
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 从打开应用或命令开始，逐步说明。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 已脱敏日志、截图或诊断信息
+      description: 不要上传秘密凭据、私有任务资料或完整用户目录。
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issue，没有发现相同问题。
+          required: true
+        - label: 我已删除 API Key、Token 和其他敏感信息。
+          required: true

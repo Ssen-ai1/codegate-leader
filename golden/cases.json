@@ -1,11 +1,11 @@
 [
-  { "id": "small-clear-task", "kind": "clear-coding", "assertions": ["TaskSpec approved", "Plan accepted", "Handoff generated"] },
-  { "id": "ambiguous-task", "kind": "clarification", "assertions": ["blocking question prevents approval", "answer produces versioned TaskSpec"] },
-  { "id": "rubric-contest", "kind": "rubric", "assertions": ["score item retains SourcePointer", "Rubric Matrix maps to PlanStep"] },
-  { "id": "existing-repository", "kind": "multi-step", "assertions": ["environment facts pending then confirmed", "dependency unlocks next step"] },
-  { "id": "scope-expansion", "kind": "drift", "assertions": ["unreported Git change requires user decision"] },
-  { "id": "report-diff-mismatch", "kind": "evidence", "assertions": ["claimed file absent from Diff is rejected"] },
-  { "id": "requirement-change", "kind": "change", "assertions": ["TaskSpec revision remains versioned", "Plan needs explicit patch"] },
-  { "id": "agent-switch", "kind": "handoff", "assertions": ["Codex and Claude Code receive neutral artifacts"] },
-  { "id": "beginner-mentor", "kind": "learning", "assertions": ["learning profile persists", "Mentor remains separate from Handoff"] }
+  { "id": "small-clear-task", "kind": "clear-coding", "taskText": "# 目标\n实现健康检查端点。\n# 要求\n- 必须返回 JSON 状态。\n# 验收\n- 运行测试并通过。", "assertions": ["TaskSpec approved", "Plan accepted", "Handoff generated"] },
+  { "id": "ambiguous-task", "kind": "clarification", "taskText": "构建部署工具。\n待确认：目标平台是 Windows 还是 Linux？", "assertions": ["blocking question prevents approval", "answer produces versioned TaskSpec"] },
+  { "id": "rubric-contest", "kind": "rubric", "taskText": "# 交付物\n实现检索服务。\n# 评分标准\n- 检索准确率 40 分。\n- 响应性能 20 分。\n# 验收\n运行基准测试。", "assertions": ["score item retains SourcePointer", "Rubric Matrix maps to PlanStep"] },
+  { "id": "existing-repository", "kind": "multi-step", "taskText": "# 交付物\n- 实现 API。\n- 创建迁移脚本。\n# 要求\n必须保留现有数据库。\n# 验收\n运行单元测试和集成测试。", "assertions": ["environment facts pending then confirmed", "dependency unlocks next step"] },
+  { "id": "scope-expansion", "kind": "drift", "taskText": "修复登录超时问题。不得重构无关账户模块。验收：相关测试通过。", "assertions": ["unreported Git change requires user decision"] },
+  { "id": "report-diff-mismatch", "kind": "evidence", "taskText": "实现配置校验。必须报告所有修改文件。验收：测试通过。", "assertions": ["claimed file absent from Diff is rejected"] },
+  { "id": "requirement-change", "kind": "change", "taskText": "实现本地缓存。需要保留可追踪的需求变更。验收：缓存测试通过。", "assertions": ["TaskSpec revision remains versioned", "Plan needs explicit patch"] },
+  { "id": "agent-switch", "kind": "handoff", "taskText": "实现命令行导出功能。必须允许不同 Coding Agent 接力。验收：CLI 测试通过。", "assertions": ["Codex and Claude Code receive neutral artifacts"] },
+  { "id": "beginner-mentor", "kind": "learning", "taskText": "实现排序功能并解释复杂度。验收：边界测试通过。", "assertions": ["learning profile persists", "Mentor remains separate from Handoff"] }
 ]

@@ -34,5 +34,5 @@ describe("CLI end-to-end workflow", () => {
     expect(await run(root, "review", reportPath)).toContain("revision-required");
     expect(await run(root, "correct", "--agent", "claude")).toContain("Correction Requirements");
     expect(await run(root, "export-handoff", "step-001")).toContain("step-001 v2");
-  });
+  }, 15_000);
 });

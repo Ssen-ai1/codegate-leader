@@ -1,9 +1,28 @@
 {
   "name": "codegate-leader",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.9",
   "private": true,
   "description": "A model-agnostic technical leader workspace for complex coding tasks.",
   "author": "CodeGate Leader Contributors",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghhdhy/codegate-leader.git"
+  },
+  "homepage": "https://github.com/ghhdhy/codegate-leader#readme",
+  "bugs": {
+    "url": "https://github.com/ghhdhy/codegate-leader/issues"
+  },
+  "keywords": [
+    "coding-agent",
+    "ai-agent",
+    "technical-leader",
+    "electron",
+    "codex",
+    "claude-code",
+    "fpga",
+    "evidence-review"
+  ],
   "type": "module",
   "main": "desktop/main.cjs",
   "engines": {
@@ -18,6 +37,8 @@
     "test": "vitest run",
     "desktop": "npm run build && electron desktop/main.cjs",
     "package:win": "npm run build && electron-builder --win nsis --publish never",
+    "smoke:packaged": "node scripts/packaged-smoke.mjs",
+    "release:check": "node scripts/release-readiness.mjs --strict",
     "check": "npm run build && npm test"
   },
   "dependencies": {
@@ -29,8 +50,8 @@
   },
   "devDependencies": {
     "@types/node": "26.2.0",
-    "electron": "40.0.0",
-    "electron-builder": "26.8.1",
+    "electron": "44.0.0",
+    "electron-builder": "26.15.3",
     "tsx": "4.23.12",
     "typescript": "6.0.3",
     "vitest": "4.1.11"
@@ -38,9 +59,25 @@
   "build": {
     "appId": "com.codegate.leader",
     "productName": "CodeGate Leader",
-    "directories": { "output": "release" },
-    "files": ["dist/**", "desktop/**", "package.json"],
-    "win": { "target": ["nsis"], "signAndEditExecutable": false },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "desktop/**",
+      "assets/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/app-icon.ico",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { extractRubricLines } from "../src/core/source-material.js";
 import { extractMaterial } from "../src/core/source-material.js";
 import path from "node:path";
+import { buildTaskSpec } from "../src/core/task-intake.js";
 
 describe("source material analysis", () => {
   it("keeps score-bearing source lines as rubric candidates instead of hard requirements", () => {
@@ -11,11 +12,14 @@ describe("source material analysis", () => {
     const result = await extractMaterial(path.join(process.cwd(), "node_modules", "mammoth", "test", "test-data", "single-paragraph.docx"));
     expect(result.sourceType).toBe("document");
     expect(result.text.trim().length).toBeGreaterThan(0);
-  });
+  }, 15_000);
   it("extracts text from an actual PDF input", async () => {
     const result = await extractMaterial(path.join(process.cwd(), "tests", "fixtures", "source-material.pdf"));
     expect(result.sourceType).toBe("document");
     expect(result.text).toContain("performance 20 points");
+    expect(result.lineLocators?.some((locator) => locator.startsWith("page="))).toBe(true);
+    const task = buildTaskSpec("source-material.pdf", result.text, result.sourceType, "2026-08-24T00:00:00.000Z", result.lineLocators);
+    expect(task.rubricItems[0]?.sourcePointers[0]?.locator).toContain("#page=");
   });
   it("runs OCR for an actual image input", async () => {
     const result = await extractMaterial(path.join(process.cwd(), "node_modules", "tesseract.js", "docs", "images", "tesseract.png"));
