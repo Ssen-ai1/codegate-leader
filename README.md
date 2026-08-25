@@ -4,11 +4,11 @@
   <p><strong>先把产品和赛题想清楚，再让 Coding Agent 写代码。</strong></p>
   <p>一个独立于模型与 Agent 的本地技术负责人工作台：需求澄清、架构决策、动态计划、Agent Prompt、真实证据审查与纠偏。</p>
 
-  [![CI](https://github.com/ghhdhy/codegate-leader/actions/workflows/ci.yml/badge.svg)](https://github.com/ghhdhy/codegate-leader/actions/workflows/ci.yml)
+  [![CI](https://github.com/Ssen-ai1/codegate-leader/actions/workflows/ci.yml/badge.svg)](https://github.com/Ssen-ai1/codegate-leader/actions/workflows/ci.yml)
   [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
   [![Node](https://img.shields.io/badge/Node.js-22%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
   [![Platform](https://img.shields.io/badge/Desktop-Windows-0078D4?logo=windows)](#安装与运行)
-  [![Version](https://img.shields.io/badge/version-0.2.0--alpha.9-orange)](https://github.com/ghhdhy/codegate-leader/releases)
+  [![Version](https://img.shields.io/badge/version-0.2.0--alpha.9-orange)](https://github.com/Ssen-ai1/codegate-leader/releases)
 </div>
 
 > **Alpha 提示：** 当前版本适合开发者体验、研究和共建。Windows 安装包尚未进行正式代码签名，商业发行所需的法律文本、更新服务和授权服务也尚未部署。
@@ -109,7 +109,7 @@ CodeGate 会建立七类产品蓝图：目标、用户、MVP/非目标、运行�
 ### 5 分钟从源码运行
 
 ```powershell
-git clone https://github.com/ghhdhy/codegate-leader.git
+git clone https://github.com/Ssen-ai1/codegate-leader.git
 cd codegate-leader
 npm ci
 npm run check

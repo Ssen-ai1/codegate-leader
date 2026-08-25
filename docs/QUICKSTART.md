@@ -19,7 +19,7 @@ npm --version
 ## 2. 下载并启动
 
 ```powershell
-git clone https://github.com/ghhdhy/codegate-leader.git
+git clone https://github.com/Ssen-ai1/codegate-leader.git
 cd codegate-leader
 npm ci
 npm run check

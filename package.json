@@ -7,11 +7,11 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ghhdhy/codegate-leader.git"
+    "url": "git+https://github.com/Ssen-ai1/codegate-leader.git"
   },
-  "homepage": "https://github.com/ghhdhy/codegate-leader#readme",
+  "homepage": "https://github.com/Ssen-ai1/codegate-leader#readme",
   "bugs": {
-    "url": "https://github.com/ghhdhy/codegate-leader/issues"
+    "url": "https://github.com/Ssen-ai1/codegate-leader/issues"
   },
   "keywords": [
     "coding-agent",

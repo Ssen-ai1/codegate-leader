@@ -15,7 +15,7 @@
 
 推荐通过 GitHub 仓库的 **Security → Report a vulnerability** 创建私密安全公告草稿：
 
-`https://github.com/ghhdhy/codegate-leader/security/advisories/new`
+`https://github.com/Ssen-ai1/codegate-leader/security/advisories/new`
 
 报告请包含受影响版本和系统、漏洞影响、最小复现步骤、所需模型/文件/Agent、已知缓解方式，以及可公开的脱敏日志或 PoC。
 
