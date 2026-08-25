@@ -252,6 +252,7 @@ CodeGate 的边界同样重要：
 
 ## 文档导航
 
+- [版本更新记录](CHANGELOG.md)
 - [快速上手](docs/QUICKSTART.md)
 - [完整工作流与状态机](docs/WORKFLOW.md)
 - [技术架构](docs/ARCHITECTURE.md)
